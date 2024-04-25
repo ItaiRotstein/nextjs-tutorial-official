@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import {
-  CustomersTableType, 
+  CustomersTableType,
   FormattedCustomersTable,
 } from '@/app/lib/definitions';
 import Link from 'next/link';
@@ -59,9 +59,17 @@ export default async function CustomersTable({
                     </div>
                   </div>
                   <div className="pt-4 text-sm">
-                    <Link href={`/dashboard/invoices?query=${customer.name}`}>
-                      <p className='w-20'>{customer.total_invoices} invoices</p>
-                    </Link>
+                    <p>
+                      {customer.total_invoices > 0 ?
+                        (
+                          <Link href={`/dashboard/invoices?query=${customer.name}`} className='text-blue-600 underline'>
+                            {customer.total_invoices} invoices
+                          </Link>
+                        ) : (
+                          `${customer.total_invoices} invoices`
+                        )
+                      }
+                    </p>
                   </div>
                 </div>
               ))}
@@ -105,10 +113,15 @@ export default async function CustomersTable({
                     <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
                       {customer.email}
                     </td>
-                    <td className={`whitespace-nowrap bg-white px-4 py-5 text-sm ${customer.total_invoices > 0 && 'text-blue-500 underline'}`}>
-                      <Link href={`/dashboard/invoices?query=${customer.name}`}>
-                        {customer.total_invoices}
-                      </Link>
+                    <td className='whitespace-nowrap bg-white px-4 py-5 text-sm'>
+                      {customer.total_invoices > 0 ? (
+                        <Link href={`/dashboard/invoices?query=${customer.name}`} className='text-blue-600 underline'>
+                          {customer.total_invoices}
+                        </Link>
+                      ) : (
+                        `${customer.total_invoices}`
+                      )
+                      }
                     </td>
                     <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
                       {customer.total_pending}
